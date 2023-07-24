@@ -1,7 +1,7 @@
-repeat wait(10) until game:IsLoaded()
-repeat wait(10) until game.Players.LocalPlayer.Character
-repeat wait(10) until game:GetService("Players").LocalPlayer.PlayerGui.Main:FindFirstChild("ChooseTeam") == nil
-wait()
+repeat wait(1) until game:IsLoaded()
+repeat wait(1) until game.Players.LocalPlayer.Character
+repeat wait(1) until game:GetService("Players").LocalPlayer.PlayerGui.Main:FindFirstChild("ChooseTeam") == nil
+wait(10)
 function notification(mess)
     game.StarterGui:SetCore("SendNotification", {
     Title = "Masterp Service"; -- the title (ofc)
