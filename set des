@@ -1,6 +1,6 @@
-repeat wait(1) until game:IsLoaded()
-repeat wait(1) until game.Players.LocalPlayer.Character
-repeat wait(1) until game:GetService("Players").LocalPlayer.PlayerGui.Main:FindFirstChild("ChooseTeam") == nil
+repeat wait(10) until game:IsLoaded()
+repeat wait(10) until game.Players.LocalPlayer.Character
+repeat wait(10) until game:GetService("Players").LocalPlayer.PlayerGui.Main:FindFirstChild("ChooseTeam") == nil
 wait()
 function notification(mess)
     game.StarterGui:SetCore("SendNotification", {
@@ -332,7 +332,7 @@ spawn(function()
             Table_Clear(Fruit1M) 
             Table_Clear(Alias)
     
-            wait(5)
+            wait(10)
         end)
     end
 end)
