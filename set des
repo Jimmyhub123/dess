@@ -1,0 +1,348 @@
+repeat wait(1) until game:IsLoaded()
+repeat wait(1) until game.Players.LocalPlayer.Character
+repeat wait(1) until game:GetService("Players").LocalPlayer.PlayerGui.Main:FindFirstChild("ChooseTeam") == nil
+wait()
+function notification(mess)
+    game.StarterGui:SetCore("SendNotification", {
+    Title = "Masterp Service"; -- the title (ofc)
+    Text = tostring(mess); -- what the text says (ofc)
+    Icon = "rbxassetid://6917315348"; -- the image if u want. 
+    Duration = 5; -- how long the notification should in secounds
+    })
+end
+notification("Loaded Script!")
+
+_G.Alias_Inventory = {"Yama", "Hallow Scythe", "Tushita", "Cursed Dual Katana", "True Triple Katana", "Dark Dagger", "Soul Guitar"}
+_G.Inventory = {"Yama", "Hallow Scythe", "Tushita", "Cursed Dual Katana", "True Triple Katana", "Dark Dagger", "Soul Guitar"}
+
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local plr_Name = game.Players.LocalPlayer
+local frames = nil
+local Account = loadstring(game:HttpGet"https://raw.githubusercontent.com/ic3w0lf22/Roblox-Account-Manager/master/RAMAccount.lua")()
+local Acc = Account.new(LocalPlayer.Name)
+local __alias = "Masterp Service"
+local __description = "Welcome"
+local Awakened = {}
+local Awakened2 = {}
+local SwordInventory = {}
+local GunInventory = {}
+local FruitInventory = {}
+local Inventory = {}
+local FightingStyle = {}
+local Alias_Inventory = {}
+local Fruit1M = {}
+local Alias = {}
+local World = {
+    [2753915549] = "1",
+    [4442272183] = "2",
+    [7449423635] = "3"
+}
+
+
+function Concat_Table1(Args1)
+    return table.concat(Args1,", ") 
+end
+function Concat_Table2(Args1)
+    return table.concat(Args1,"\n") 
+end
+function Concat_Table3(__table)
+    return table.concat(__table," & ") 
+end
+function Table_Clear(Args1)
+    return table.clear(Args1) 
+end
+
+function upvalue(num)
+    local values = {{1000, "K"}, {1000000, "M"}, {1000000000, "B"}}
+    local str = ""
+    if type(num) ~= "number" then num = tonumber(num) end
+    for i = 1, #values do
+        if num >= values[i][1] then
+            str = (math.floor(num / values[i][1]))..values[i][2]
+        end
+    end
+    return (num < 1000 and num or str)
+end
+spawn(function()
+    while true do wait(1)
+        inventory = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")
+    end
+end)
+GetSwordInventory = function()
+    for i,v in pairs(inventory) do
+        if v.Type == "Sword" then
+            for i, vv in pairs(_G.Inventory) do
+                if string.find(v.Name, vv) then
+                    table.insert(SwordInventory,v.Name.." [Mas."..v.Mastery.."]")
+                end
+            end
+        end
+    end
+    return SwordInventory
+end
+local MeleeCheck = function(...)
+    local ResponeData;
+    if #{...} > 1 then
+        ResponeData = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(...)
+    else
+        ResponeData = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(...,true)
+    end
+    if ResponeData == 1 or ResponeData == 2 then
+        return true
+    end
+    return false
+end
+local Melee = function(ARG1)
+    if MeleeCheck(ARG1) then
+        MELEE = ARG1
+        local sub = string.gsub(MELEE, "%Buy", "")
+        table.insert(FightingStyle,sub)
+    end   
+    return FightingStyle
+end
+GetText_Level = function()
+    local Level = game:GetService("Players").LocalPlayer.PlayerGui.Main.Level
+    if string.find(Level.Text,"MAX") then
+        return true
+    end
+    return false
+end
+GetSwordInventoryAlias = function()
+    for i, v in pairs(inventory) do
+        if v.Type == "Sword" then
+            for i, vv in pairs(_G.Alias_Inventory) do
+                if string.find(v.Name, vv) then
+                    table.insert(Alias_Inventory,v.Name)
+                end
+            end
+        end
+        if v.Type == "Gun" then
+            for i, vv in pairs(_G.Alias_Inventory) do
+                if string.find(v.Name, vv) then
+                    table.insert(Alias_Inventory,v.Name)
+                end
+            end
+        end
+    end
+    return Alias_Inventory
+end
+local GetFruitInventory = function()
+    for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryFruits")) do
+        if v.Price >= 1000000 then  
+            local sub = string.gsub(v.Name, "%-%a+", "")
+            table.insert(Fruit1M,sub)
+        end
+    end
+end
+function Comma(Value)
+    local formatted = Value
+    while true do
+        formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
+        if (k==0) then
+            break
+        end
+    end
+    return formatted
+end
+function GetAwaken_v4()
+    for i,v in pairs(game:GetService("Workspace").Characters[plr_Name.Name]:GetChildren()) do 
+        if v:IsA("Tool") then
+            if v.Name == "Awakening" then
+                return true
+            end
+        end
+    end
+    for i,v in pairs(game:GetService("Players")[plr_Name.Name].Backpack:GetChildren()) do 
+        if v:IsA("Tool") then
+            if v.Name == "Awakening" then
+                return true
+            end
+        end
+    end
+end
+wait(5)
+local RunService = game:GetService("RunService")
+    RunService.RenderStepped:Connect(function(step)
+    frames = math.floor(1/step).." *°°"
+end)
+spawn(function()
+    while true do 
+        pcall(function()
+            local __aliasText = ""
+            local __descriptionText = ""
+            local Level = LocalPlayer.Data.Level.Value
+            local Beli = upvalue(LocalPlayer.Data.Beli.Value)
+            local Fragments = upvalue(LocalPlayer.Data.Fragments.Value)
+            local Fruit = game:GetService("Players").LocalPlayer.Data.DevilFruit.Value
+            local NameFruit = string.gsub(Fruit, "%-%a+", "")
+            local Race = game:GetService("Players").LocalPlayer.Data.Race.Value
+            local p1 = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist","1")
+            local p2 = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Wenlocktoad","1")
+
+            if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AwakeningChanger", "Check") then
+                Remote_Awaken = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
+                for i, v in pairs(Remote_Awaken) do
+                    if v["Key"] then
+                        if v["Awakened"] then
+                            if i ~= "X" then
+                                table.insert(Awakened, v["Key"])
+                                table.insert(Awakened2, v["Key"])
+                            else
+                                table.insert(Awakened, v["Key"])
+                                table.insert(Awakened2, v["Key"])
+                            end
+                        end
+                    end                
+                end
+            end
+            for _i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                if v:IsA("Tool") then
+                    if v.ToolTip == "Blox Fruit" then
+                        MasteryFruit = v.Level.Value
+                    end
+                end
+            end
+            GetSwordInventoryAlias()
+            GetFruitInventory()
+            
+            Melee("BuySuperhuman")
+            Melee("BuyDeathStep")
+            Melee("BuySharkmanKarate")
+            Melee("BuyElectricClaw")
+            Melee("BuyDragonTalon")
+            Melee("BuyGodshuman")
+        
+            if GetText_Level() then
+                if #FightingStyle == 6 then
+                    __aliasText = __aliasText.."God ▪ "
+                else
+                    __aliasText = __aliasText..#FightingStyle.."/6 ▪ "
+                end
+                skill = 0
+                if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AwakeningChanger", "Check") then
+                    for i, v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")) do
+                        skill = skill + 1
+                    end
+                end
+                if tonumber(#Awakened2) == tonumber(skill) and tonumber(skill) ~= 0 then
+                    __aliasText = __aliasText.."F."..NameFruit.." ▪ "
+                end
+                if tonumber(#Awakened2) < tonumber(skill) then
+                    __aliasText = __aliasText .. "[AW" .. #Awakened2 .. "]: " .. NameFruit
+                elseif tonumber(#Awakened2) == nil or tonumber(skill) == 0 then
+                    __aliasText = __aliasText .. NameFruit .. " ▪ "
+                end                
+                __aliasText = __aliasText..Concat_Table3(Alias)
+            else
+                __aliasText = __aliasText..#FightingStyle..'/6 ▪ UN-MAX ▪' -- Level is not fully
+            end
+            if table.find(Alias_Inventory,"Yama") then
+                __aliasText = __aliasText.." Y / "
+            end
+            if table.find(Alias_Inventory,"Hallow Scythe") then
+                __aliasText = __aliasText.." H / "
+            end
+            if table.find(Alias_Inventory,"Tushita") then
+                __aliasText = __aliasText.." T / "
+            end
+            if table.find(Alias_Inventory,"Dark Dagger") then
+                __aliasText = __aliasText.." DG / "
+            end
+            if table.find(Alias_Inventory,"Cursed Dual Katana") then
+                __aliasText = __aliasText.." CDK / "
+            end
+            if table.find(Alias_Inventory,"True Triple Katana") then
+                __aliasText = __aliasText.." TK / "
+            end
+            if table.find(Alias_Inventory,"Soul Guitar") then
+                __aliasText = __aliasText.." SG "
+            end 
+            if GetText_Level() then
+                if p1 == -2 and p2 ~= -2 and tostring(p2) ~= "nil" then
+                    V_Race = "2"
+                elseif p2 == -2 and p2 ~= nil and not GetAwaken_v4() then
+                    V_Race = "3"
+                elseif GetAwaken_v4() then
+                    V_Race = "4"
+                else
+                    V_Race = ""
+                end
+                __descriptionText = __descriptionText..tostring(Race)..tostring(V_Race).." ▪ "
+                for i, v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
+                    if v.Type == "Material" then
+                        if string.find(v.Name,"Mirror Fractal") then
+                            __descriptionText = __descriptionText.." Mirror ▪ "
+                        end
+                    end
+                    if v.Type == "Wear" then
+                        if string.find(v.Name,"Valkyrie Helm") then
+                            __descriptionText = __descriptionText.." Helm ▪ "
+                        end
+                    end       
+                end
+                __descriptionText = __descriptionText.." B: "..Beli
+                __descriptionText = __descriptionText.." F: "..Fragments
+                if _G.Setting_Show_Fps then
+                    __descriptionText = __descriptionText.." ↬ Fps:"..frames
+                else
+                    __descriptionText = __descriptionText.." ↬↬↬"
+                end
+                __descriptionText = __descriptionText.."\nFruit: "..tostring(NameFruit).." [Mas."..tostring(MasteryFruit).."]"
+                __descriptionText = __descriptionText.."\nAwaken Skill: "..Concat_Table1(Awakened)
+                __descriptionText = __descriptionText.."\n>>>>>> Fruit <<<<<<\n"
+                __descriptionText = __descriptionText..Concat_Table2(Fruit1M)
+                __descriptionText = __descriptionText.."\n>>>>>> Sword <<<<<<\n"
+                __descriptionText = __descriptionText..Concat_Table2(GetSwordInventory())
+                __descriptionText = __descriptionText.."\n---------🤍 INFO 🤍---------"
+                __descriptionText = __descriptionText.."\nMake By (Masterp#7545)"
+            else
+                __descriptionText = __descriptionText.."World: "..World[game.PlaceId]
+                __descriptionText = __descriptionText.." Level: "..Level
+                __descriptionText = __descriptionText.." Beli: "..Beli
+                __descriptionText = __descriptionText.." Fragments: "..Fragments
+                if _G.Setting_Show_Fps then
+                    __descriptionText = __descriptionText.." ↬ "..frames
+                end
+                __descriptionText = __descriptionText.."\nFruit: "..tostring(NameFruit).." [Mas."..tostring(MasteryFruit).."]"
+                __descriptionText = __descriptionText.."\nAwaken Skill: "..Concat_Table1(Awakened)
+                __descriptionText = __descriptionText.."\n>>>>>> Melee <<<<<<\n"
+                __descriptionText = __descriptionText..Concat_Table2(FightingStyle)
+                __descriptionText = __descriptionText.."\n>>>>>> Fruit <<<<<<\n"
+                __descriptionText = __descriptionText..Concat_Table2(Fruit1M)
+                __descriptionText = __descriptionText.."\n>>>>>> Sword <<<<<<\n"
+                __descriptionText = __descriptionText..Concat_Table2(GetSwordInventory())
+                __descriptionText = __descriptionText.."\n---------🤍 INFO 🤍---------"
+                __descriptionText = __descriptionText.."\nMake By (Masterp#7545)"
+            end
+
+            --print(__aliasText.."\n")
+            --print(__descriptionText.."\n")
+            
+            Acc:SetAlias(__aliasText)
+            Acc:SetDescription(__descriptionText)
+            
+            Table_Clear(Awakened)
+            Table_Clear(Awakened2)
+            Table_Clear(SwordInventory)
+            Table_Clear(GunInventory)
+            Table_Clear(FruitInventory)
+            Table_Clear(Inventory)
+            Table_Clear(FightingStyle)
+            Table_Clear(Alias_Inventory)
+            Table_Clear(Fruit1M) 
+            Table_Clear(Alias)
+    
+            wait(5)
+        end)
+    end
+end)
+spawn(function()
+    while true do wait()
+        pcall(function()
+            if _G.Fps_Lock['Enable'] then
+                setfpscap(_G.Fps_Lock['Value'])
+            end
+        end)
+    end
+end)
+warn("[+] Script is Loaded")
