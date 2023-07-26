@@ -1,7 +1,7 @@
 repeat wait(1) until game:IsLoaded()
 repeat wait(1) until game.Players.LocalPlayer.Character
 repeat wait(1) until game:GetService("Players").LocalPlayer.PlayerGui.Main:FindFirstChild("ChooseTeam") == nil
-wait(10)
+task.wait(10)
 function notification(mess)
     game.StarterGui:SetCore("SendNotification", {
     Title = "Masterp Service"; -- the title (ofc)
@@ -92,15 +92,15 @@ local MeleeCheck = function(...)
     end
     return false
 end
-local Melee = function(ARG1)
-    if MeleeCheck(ARG1) then
-        MELEE = ARG1
-        local sub = string.gsub(MELEE, "%Buy", "")
+local Melee = function(...)
+    if MeleeCheck(...) then
+        Melee = ...
+        local sub = string.gsub(Melee, "%Buy", "")
         table.insert(FightingStyle,sub)
     end   
     return FightingStyle
 end
-GetText_Level = function()
+Get_Level = function()
     local Level = game:GetService("Players").LocalPlayer.PlayerGui.Main.Level
     if string.find(Level.Text,"MAX") then
         return true
@@ -202,6 +202,7 @@ spawn(function()
                     end
                 end
             end
+
             GetSwordInventoryAlias()
             GetFruitInventory()
             
@@ -210,11 +211,11 @@ spawn(function()
             Melee("BuySharkmanKarate")
             Melee("BuyElectricClaw")
             Melee("BuyDragonTalon")
-            Melee("BuyGodshuman")
+            Melee("BuyGodhuman")
         
-            if GetText_Level() then
+            if Get_Level() then -- Level is fully
                 if #FightingStyle == 6 then
-                    __aliasText = __aliasText.."God ▪ "
+                    __aliasText = __aliasText.."GOD ▪ "
                 else
                     __aliasText = __aliasText..#FightingStyle.."/6 ▪ "
                 end
@@ -225,7 +226,7 @@ spawn(function()
                     end
                 end
                 if tonumber(#Awakened2) == tonumber(skill) and tonumber(skill) ~= 0 then
-                    __aliasText = __aliasText.."F."..NameFruit.." ▪ "
+                    __aliasText = __aliasText.."[F] "..NameFruit.." ▪ "
                 end
                 if tonumber(#Awakened2) < tonumber(skill) then
                     __aliasText = __aliasText .. "[AW" .. #Awakened2 .. "]: " .. NameFruit
@@ -234,36 +235,36 @@ spawn(function()
                 end                
                 __aliasText = __aliasText..Concat_Table3(Alias)
             else
-                __aliasText = __aliasText..#FightingStyle..'/6 ▪ UN-MAX ▪' -- Level is not fully
+                __aliasText = __aliasText..#FightingStyle..'/6 ▪ UN-MAX ▪ ' -- Level is not fully
             end
             if table.find(Alias_Inventory,"Yama") then
-                __aliasText = __aliasText.." Y / "
+                __aliasText = __aliasText.."Y,"
             end
             if table.find(Alias_Inventory,"Hallow Scythe") then
-                __aliasText = __aliasText.." H / "
+                __aliasText = __aliasText.."H,"
             end
             if table.find(Alias_Inventory,"Tushita") then
-                __aliasText = __aliasText.." T / "
+                __aliasText = __aliasText.."T,"
             end
             if table.find(Alias_Inventory,"Dark Dagger") then
-                __aliasText = __aliasText.." DG / "
+                __aliasText = __aliasText.."DG,"
             end
             if table.find(Alias_Inventory,"Cursed Dual Katana") then
-                __aliasText = __aliasText.." CDK / "
+                __aliasText = __aliasText.."CK,"
             end
             if table.find(Alias_Inventory,"True Triple Katana") then
-                __aliasText = __aliasText.." TK / "
+                __aliasText = __aliasText.."TK,"
             end
             if table.find(Alias_Inventory,"Soul Guitar") then
-                __aliasText = __aliasText.." SG "
+                __aliasText = __aliasText.."SG"
             end 
-            if GetText_Level() then
+            if Get_Level() then
                 if p1 == -2 and p2 ~= -2 and tostring(p2) ~= "nil" then
-                    V_Race = "2"
+                    V_Race = " [2]"
                 elseif p2 == -2 and p2 ~= nil and not GetAwaken_v4() then
-                    V_Race = "3"
+                    V_Race = " [3]"
                 elseif GetAwaken_v4() then
-                    V_Race = "4"
+                    V_Race = " [4]"
                 else
                     V_Race = ""
                 end
@@ -271,22 +272,17 @@ spawn(function()
                 for i, v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
                     if v.Type == "Material" then
                         if string.find(v.Name,"Mirror Fractal") then
-                            __descriptionText = __descriptionText.." Mirror ▪ "
+                            __descriptionText = __descriptionText.." MIR ▪ "
                         end
                     end
                     if v.Type == "Wear" then
                         if string.find(v.Name,"Valkyrie Helm") then
-                            __descriptionText = __descriptionText.." Helm ▪ "
+                            __descriptionText = __descriptionText.." VH ▪ "
                         end
                     end       
                 end
                 __descriptionText = __descriptionText.." B: "..Beli
                 __descriptionText = __descriptionText.." F: "..Fragments
-                if _G.Setting_Show_Fps then
-                    __descriptionText = __descriptionText.." ↬ Fps:"..frames
-                else
-                    __descriptionText = __descriptionText.." ↬↬↬"
-                end
                 __descriptionText = __descriptionText.."\nFruit: "..tostring(NameFruit).." [Mas."..tostring(MasteryFruit).."]"
                 __descriptionText = __descriptionText.."\nAwaken Skill: "..Concat_Table1(Awakened)
                 __descriptionText = __descriptionText.."\n>>>>>> Fruit <<<<<<\n"
@@ -300,9 +296,6 @@ spawn(function()
                 __descriptionText = __descriptionText.." Level: "..Level
                 __descriptionText = __descriptionText.." Beli: "..Beli
                 __descriptionText = __descriptionText.." Fragments: "..Fragments
-                if _G.Setting_Show_Fps then
-                    __descriptionText = __descriptionText.." ↬ "..frames
-                end
                 __descriptionText = __descriptionText.."\nFruit: "..tostring(NameFruit).." [Mas."..tostring(MasteryFruit).."]"
                 __descriptionText = __descriptionText.."\nAwaken Skill: "..Concat_Table1(Awakened)
                 __descriptionText = __descriptionText.."\n>>>>>> Melee <<<<<<\n"
@@ -331,17 +324,9 @@ spawn(function()
             Table_Clear(Alias_Inventory)
             Table_Clear(Fruit1M) 
             Table_Clear(Alias)
-    
+
+            warn("Writen to logs")
             wait(10)
-        end)
-    end
-end)
-spawn(function()
-    while true do wait()
-        pcall(function()
-            if _G.Fps_Lock['Enable'] then
-                setfpscap(_G.Fps_Lock['Value'])
-            end
         end)
     end
 end)
